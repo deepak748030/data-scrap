@@ -2,12 +2,12 @@
 
 # Update system packages and install dependencies
 echo "Updating system packages..."
-sudo apt-get update && sudo apt-get install -y wget unzip xvfb sudo
+apt-get update && apt-get install -y wget unzip xvfb
 
-# Install Google Chrome
+# Install Google Chrome (without sudo)
 echo "Downloading and installing Google Chrome..."
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+dpkg -i google-chrome-stable_current_amd64.deb || { echo "Google Chrome installation failed"; exit 1; }
 
 # Verify Google Chrome installation
 echo "Verifying Google Chrome installation..."
@@ -15,13 +15,13 @@ google-chrome --version || { echo "Google Chrome installation failed"; exit 1; }
 
 # Set CHROME_PATH environment variable
 echo "Setting CHROME_PATH environment variable..."
-export CHROME_PATH="/usr/bin/google-chrome"
-echo "CHROME_PATH=$CHROME_PATH" | sudo tee -a /etc/environment
-source /etc/environment
+export CHROME_PATH="$HOME/google-chrome/google-chrome"
+echo "CHROME_PATH=$CHROME_PATH" >> ~/.bashrc
+source ~/.bashrc
 
 # Install Xvfb for headless Chrome
 echo "Installing Xvfb for headless Chrome..."
-sudo apt-get install -y xvfb
+apt-get install -y xvfb
 
 # Verify Xvfb installation
 echo "Verifying Xvfb installation..."
