@@ -1,0 +1,68 @@
+const puppeteer = require("puppeteer");
+
+(async () => {
+    // Launch Puppeteer in non-headless mode to see live interaction
+    const browser = await puppeteer.launch({
+        headless: true, // Ensures the browser UI is visible
+        defaultViewport: null, // Full-screen browser window
+        args: ["--start-maximized"], // Opens the browser in maximized mode
+    });
+
+    const page = await browser.newPage();
+
+    try {
+        // Navigate to the target website
+        const url = "https://www.getmerlin.in/chat";
+        console.log(`Navigating to ${url}`);
+        await page.goto(url);
+
+        // Wait for the input field and interact
+        const inputSelector = ".tiptap p"; // Adjust selector if necessary
+        await page.evaluate(() => {
+            let pTag = document.querySelector(".tiptap p");
+            if (!pTag) {
+                const tiptapDiv = document.querySelector(".tiptap");
+                if (tiptapDiv) {
+                    pTag = document.createElement("p");
+                    tiptapDiv.appendChild(pTag);
+                }
+            }
+            if (pTag) {
+                pTag.textContent = "behave like you are movie or series searching api";
+            }
+        });
+        await page.waitForSelector(inputSelector);
+        console.log("Typing a message...");
+        await page.type(inputSelector, "lucky baskar 2024 correct this moovie name and give all info also or you cana lso search using google also");
+
+        // Wait for the send button and click it
+        console.log('clicking btn')
+        const sendButtonSelector = ".T107_3"; // Adjust selector if necessary
+        await page.waitForSelector(sendButtonSelector);
+        console.log('clicked')
+        await page.click(sendButtonSelector);
+        await page.waitForSelector(sendButtonSelector);
+        console.log("Sending the message...");
+        await page.click(sendButtonSelector);
+
+        // Wait for the response
+
+        const responseSelector = ".chat-message.assistant-message p"; // Adjust selector if necessary
+        console.log("Waiting for the response...");
+        await page.waitForSelector(responseSelector);
+
+        // Scrape the response
+        const response = await page.evaluate((selector) => {
+            return document.querySelector(selector)?.innerText || "No response found.";
+        }, responseSelector);
+
+        console.log("ChatGPT Response:", response);
+    } catch (err) {
+        console.error("An error occurred:", err);
+    } finally {
+        // Keep the browser open to allow live interaction
+        console.log("Script execution completed. Browser will remain open.");
+        // Comment out the next line if you want the browser to stay open
+        // await browser.close();
+    }
+})();
