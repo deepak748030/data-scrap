@@ -1,34 +1,33 @@
 #!/bin/bash
 
-# Update system packages and install dependencies
-echo "Updating system packages..."
-apt-get update && apt-get install -y wget unzip xvfb
+# Install necessary dependencies
+echo "Installing dependencies..."
+apt-get update && apt-get install -y wget unzip xvfb curl
 
-# Install Google Chrome (without sudo)
-echo "Downloading and installing Google Chrome..."
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-dpkg -i google-chrome-stable_current_amd64.deb || { echo "Google Chrome installation failed"; exit 1; }
+# Download Google Chrome package
+echo "Downloading Google Chrome..."
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O google-chrome.deb
 
-# Verify Google Chrome installation
-echo "Verifying Google Chrome installation..."
-google-chrome --version || { echo "Google Chrome installation failed"; exit 1; }
+# Extract the .deb package to the user's local directory
+echo "Extracting Google Chrome package..."
+mkdir -p $HOME/google-chrome
+dpkg-deb -x google-chrome.deb $HOME/google-chrome
 
-# Set CHROME_PATH environment variable
-echo "Setting CHROME_PATH environment variable..."
-export CHROME_PATH="$HOME/google-chrome/google-chrome"
+# Verify the installation of Google Chrome by checking the extracted files
+if [ -f "$HOME/google-chrome/usr/bin/google-chrome" ]; then
+    echo "Google Chrome installed successfully."
+else
+    echo "Google Chrome installation failed."
+    exit 1
+fi
+
+# Set CHROME_PATH to the location of the binary
+export CHROME_PATH="$HOME/google-chrome/usr/bin/google-chrome"
 echo "CHROME_PATH=$CHROME_PATH" >> ~/.bashrc
 source ~/.bashrc
 
-# Install Xvfb for headless Chrome
-echo "Installing Xvfb for headless Chrome..."
-apt-get install -y xvfb
-
-# Verify Xvfb installation
-echo "Verifying Xvfb installation..."
-xvfb-run --version || { echo "Xvfb installation failed"; exit 1; }
-
-# Run npm install
+# Install npm dependencies
 echo "Installing Node.js dependencies..."
-npm install || { echo "npm install failed"; exit 1; }
+npm install
 
 echo "Setup complete! You're ready to run your application."
