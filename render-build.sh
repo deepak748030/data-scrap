@@ -4,30 +4,21 @@
 echo "Installing dependencies..."
 apt-get update && apt-get install -y wget unzip xvfb curl
 
-# Download Google Chrome package
-echo "Downloading Google Chrome..."
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O google-chrome.deb
+# Download Chromium
+echo "Downloading Chromium..."
+wget https://github.com/zenika/alpine-chrome/releases/download/v1.0.0/chrome-headless-shell-111.0.5563.64.tar.gz -O chromium.tar.gz
 
-# Extract the .deb package to the user's local directory
-echo "Extracting Google Chrome package..."
-mkdir -p $HOME/google-chrome
-dpkg-deb -x google-chrome.deb $HOME/google-chrome
+# Extract the Chromium tar file
+echo "Extracting Chromium package..."
+tar -xvzf chromium.tar.gz -C $HOME/chromium
 
-# Verify the installation of Google Chrome by checking the extracted files
-if [ -f "$HOME/google-chrome/usr/bin/google-chrome" ]; then
-    echo "Google Chrome installed successfully."
-else
-    echo "Google Chrome installation failed."
-    exit 1
-fi
-
-# Set CHROME_PATH to the location of the binary
-export CHROME_PATH="$HOME/google-chrome/usr/bin/google-chrome"
+# Set CHROME_PATH to the extracted Chromium binary
+export CHROME_PATH="$HOME/chromium/chrome-linux/chrome"
 echo "CHROME_PATH=$CHROME_PATH" >> ~/.bashrc
 source ~/.bashrc
 
-# Install npm dependencies
+# Install Node.js dependencies
 echo "Installing Node.js dependencies..."
 npm install
 
-echo "Setup complete! You're ready to run your application."
+echo "Setup complete! Chromium is ready to run."
