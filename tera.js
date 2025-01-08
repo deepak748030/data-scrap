@@ -173,7 +173,7 @@ router.post('/download', async (req, res) => {
         await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for 3 seconds
         console.log('interval end');
         // Click on the Close button
-        await page.evaluate(() => {
+        await page.evaluate((url) => {
             const buttons = document.querySelectorAll('button[type="button"]');
             console.log(buttons);
             console.log('button finding');
@@ -186,7 +186,7 @@ router.post('/download', async (req, res) => {
 
             const inputs = document.querySelectorAll('input[type="text"]');
             inputs.forEach(input => {
-                input.value = 'https://1024terabox.com/s/1niY7xPDW265pk39RRV3TdA'; // Fill the input with 'sample text'
+                input.value = url; // Fill the input with the provided URL
                 console.log('input filled');
             });
             const submitButton = document.querySelector('button[type="submit"]');
@@ -195,7 +195,7 @@ router.post('/download', async (req, res) => {
                 console.log('submit btn clicked');
             }
             console.log('submit btn clicked');
-        });
+        }, url);
 
         await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
         console.log('page navigated');
