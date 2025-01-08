@@ -1,5 +1,5 @@
-# Use Node.js v20.17.0 as the base image
-FROM node:20.17.0
+# Use the latest stable Node.js version as the base image
+FROM node:latest
 
 # Install necessary system dependencies for Chrome and Xvfb
 RUN apt-get update && apt-get install -y \
@@ -26,17 +26,17 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --production
 
-# Copy the rest of the application
+# Copy the rest of the application code
 COPY . .
 
-# Set up environment variables for Chromium
+# Set environment variables for Chromium
 ENV CHROME_PATH=/usr/bin/chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Expose the port your app runs on
+# Expose the port your app runs on (adjust if necessary)
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["node", "app.js"]
