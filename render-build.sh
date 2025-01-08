@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# Update system packages and install dependencies
-apt-get update && apt-get install -y wget unzip xvfb
+# Create a directory for Chrome installation
+mkdir -p chrome-install
 
-# Install Chromium
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-apt-get install -y ./google-chrome-stable_current_amd64.deb
+# Download the Chrome .deb package
+wget -O chrome-install/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
-# Verify Chromium installation
-google-chrome --version
+# Extract the .deb package manually
+dpkg-deb -xv chrome-install/google-chrome.deb chrome-install
 
-# Set CHROME_PATH environment variable
-export CHROME_PATH="/usr/bin/google-chrome"
-echo "CHROME_PATH=$CHROME_PATH" >> /etc/environment
+# Set CHROME_PATH to the extracted binary
+export CHROME_PATH="$(pwd)/chrome-install/opt/google/chrome/google-chrome"
+echo "CHROME_PATH=$CHROME_PATH"
+
+# Verify Chrome installation
+$CHROME_PATH --version
