@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "xvfb-run -a npm start",
     "dev": "nodemon app.js",
     "postinstall": "npx puppeteer install",
     "build": "chmod +x render-build.sh && ./render-build.sh"
@@ -16,6 +16,7 @@
     "axios": "^1.7.9",
     "browserless": "^10.6.3",
     "cheerio": "^1.0.0",
+    "chrome-launcher": "^1.1.2",
     "express": "^4.21.2",
     "puppeteer": "^23.11.1",
     "puppeteer-extra": "^3.3.6",
