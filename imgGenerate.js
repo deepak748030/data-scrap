@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 (async () => {
     // Launch Puppeteer in non-headless mode to see live interaction
     const browser = await puppeteer.launch({
-        headless: false, // Ensures the browser UI is visible
+        headless: true, // Ensures the browser UI is visible
         defaultViewport: null, // Full-screen browser window
         args: ["--start-maximized"], // Opens the browser in maximized mode
     });
