@@ -146,8 +146,9 @@ router.post('/download', async (req, res) => {
 
     try {
         const { page } = await connect({
+            executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome',
+            args: ["--no-sandbox"],
             headless: true, // Run browser in headless mode
-            args: ["--no-sandbox"]
         });
 
         // Set the download behavior
