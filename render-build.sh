@@ -2,12 +2,12 @@
 
 # Update system packages and install dependencies
 echo "Updating system packages..."
-apt-get update && apt-get install -y wget unzip xvfb sudo dpkg-deb
+sudo apt-get update && sudo apt-get install -y wget unzip xvfb sudo
 
 # Install Google Chrome
 echo "Downloading and installing Google Chrome..."
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-apt-get install -y ./google-chrome-stable_current_amd64.deb
+sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
 
 # Verify Google Chrome installation
 echo "Verifying Google Chrome installation..."
