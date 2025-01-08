@@ -146,7 +146,7 @@ router.post('/download', async (req, res) => {
 
     try {
         const { page } = await connect({
-            headless: false, // Run browser in headless mode
+            headless: true, // Run browser in headless mode
             args: ["--no-sandbox"]
         });
 
