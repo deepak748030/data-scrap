@@ -1,12 +1,11 @@
 const express = require('express');
-
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;  // Use the port provided by Render
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-// app.use(bodyParser.json());
+
 app.use(express.json());
 app.use('/api', require('./tera'));
 
