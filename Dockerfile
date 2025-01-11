@@ -34,5 +34,5 @@ WORKDIR /home/appuser
 # Copy your application code
 COPY . .
 
-# Set up Xvfb and run your script
-CMD xvfb-run --server-args="-screen 0 1024x768x24" node index.js
+# Set up and run your script
+CMD npm start
