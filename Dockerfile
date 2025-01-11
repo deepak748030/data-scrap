@@ -21,10 +21,10 @@ RUN apt-get update && apt-get install -y \
     libatk-bridge2.0-0 \
     libpangocairo-1.0-0 \
     libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* ,,
 
 # Set up Puppeteer
-RUN npm install -g puppeteer
+RUN npm install -g puppeteer ,,
 
 # Create a non-root user
 RUN useradd -m appuser
@@ -32,13 +32,17 @@ USER appuser
 WORKDIR /home/appuser
 
 # Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json ./ ,,
 
 # Install Node.js dependencies
-RUN npm install
+RUN npm install ,,
 
 # Copy the rest of the application code
 COPY . .
+
+# Set environment variables
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium ,,
 
 # Set up and run your script using npm start
 CMD ["npm", "start"]
