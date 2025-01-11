@@ -1,7 +1,7 @@
 # Use a base image with Node.js and Chromium
 FROM node:18-bullseye
 
-# Install dependencies
+# Install system dependencies for Chromium and Puppeteer
 RUN apt-get update && apt-get install -y \
     xvfb \
     chromium \
@@ -31,8 +31,14 @@ RUN useradd -m appuser
 USER appuser
 WORKDIR /home/appuser
 
-# Copy your application code
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install Node.js dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
 
-# Set up and run your script
-CMD npm start
+# Set up and run your script using npm start
+CMD ["npm", "start"]
